@@ -1,0 +1,9 @@
+FROM rancher/pause:3.6 as pausebin
+FROM zengxu/critools:v1.25.0 as crictlbin
+FROM netshoot:v0.8
+
+ADD entrypoint.sh /
+COPY --from=pausebin /pause /pause
+COPY --from=crictlbin /usr/bin/crictl /usr/local/bin/crictl
+
+ENTRYPOINT ["/entrypoint.sh"]
