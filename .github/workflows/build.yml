@@ -30,7 +30,7 @@ jobs:
           mkdir ./build/amd64 && mkdir ./build/arm64
       - name: Put version to env
         run: |
-          echo "VERSION=$(cat ./critools-image/VERSION)" >> $GITHUB_ENV
+          echo "VERSION=$(cat ./build/VERSION)" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
