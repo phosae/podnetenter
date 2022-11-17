@@ -1,4 +1,4 @@
-FROM rancher/pause:3.6 as pausebin
+FROM registry.k8s.io/pause:3.9 as pausebin
 FROM zengxu/critools:v1.25.0 as crictlbin
 FROM netshoot:v0.8
 
