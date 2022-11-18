@@ -2,8 +2,12 @@
 set -e
 set -o pipefail
 
+if [[ -z "${NAMESPACE}" ]]; then
+    NAMESPACE=default
+fi
+
 if [[ -z "${POD_UID}" ]]; then
-    PODID=$(crictl pods --namespace default --name x -o json | jq -r --arg POD_NS "$NAMESPACE" --arg POD_NAME "$POD_NAME" '.items | map(select(.metadata.namespace==$POD_NS and .metadata.name==$POD_NAME)) | .[0].id')
+    PODID=$(crictl pods --namespace $NAMESPACE --name $POD_NAME -o json | jq -r --arg POD_NS "$NAMESPACE" --arg POD_NAME "$POD_NAME" '.items | map(select(.metadata.namespace==$POD_NS and .metadata.name==$POD_NAME)) | .[0].id')
 else
     PODID=$(crictl pods --namespace $NAMESPACE --name $POD_NAME -o json | jq -r --arg POD_UID "$POD_UID" '.items | map(select(.metadata.uid==$POD_UID)) | .[0].id')
 fi
