@@ -18,4 +18,8 @@ else
     CTR_PID=$(crictl ps --pod $PODID --name $CONTAINER -o json | jq -r --arg CONTAINER "$CONTAINER" '.containers | map(select(.metadata.name==$CONTAINER)) | .[0].id' | xargs crictl inspect | jq .info.pid)
 fi
 
-nsenter --target $CTR_PID --net "$@"
+if [[ -z "${DRYRUN}" ]]; then
+    nsenter --target $CTR_PID --net "$@"
+else
+    printf $(crictl inspectp $PODID | jq -r '.info.runtimeSpec.linux.namespaces[] |select(.type=="network") | .path')
+fi

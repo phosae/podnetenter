@@ -1,6 +1,6 @@
-## Looking to exec arbitrary net scope commands in K8s Pod?
+# Looking to exec arbitrary net scope commands in K8s Pod?
 
-### What is podnetenter?
+## What is podnetenter?
 It is a tool allowing to enter into K8s Pod's network(sandbox network).
 
 `podnetenter` can do many useful things, for example
@@ -10,7 +10,7 @@ It is a tool allowing to enter into K8s Pod's network(sandbox network).
 demo: set iptables rule for distroless puase container!
 ![](./set-iptable-rule.gif)
 
-### How to
+## How to
 
 run Pod
 ```
@@ -110,3 +110,15 @@ Docker at Worker Node
 docker run --rm -it --privileged --cgroupns=host -e NAMESPACE=default -e POD_NAME=x -v /proc:/proc -e CONTAINER_RUNTIME_ENDPOINT=unix:///run/containerd/containerd.sock -v /run/containerd/containerd.sock:/run/containerd/containerd.sock zengxu/podnetenter ip a
 ```
 
+## useful examples
+
+```
+# show pod interface list
+NAMESPACE=default POD_NAME=x entrypoint.sh ip a
+
+# output Pod netns
+NAMESPACE=default POD_NAME=x DRYRUN=true entrypoint.sh
+
+# setup new interface for Pod netns
+NETCONFPATH=/etc/cni/net.d/ CNI_PATH=/opt/cni/bin  CAP_ARGS='{"bandwidth": {"ingressRate": 209715200,"ingressBurst": 4294967295,"egressRate": 104857600,"egressBurst": 4294967295}}'  CNI_IFNAME=net1 cnitool add limited-macvlan $(NAMESPACE=default POD_NAME=x DRYRUN=true /entrypoint.sh)
+```
