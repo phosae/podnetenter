@@ -2,16 +2,16 @@ FROM registry.k8s.io/pause:3.9 as pausebin
 FROM zengxu/critools:v1.25.0 as crictlbin
 FROM zengxu/cnitool-bdad953d72e3a879d1f458c51dbf1923 as cnitoolbin
 
-FROM alpine:3.17
+FROM ubuntu:focal-20221130
 
 RUN set -ex \
-    && apk update \
-    && apk upgrade \
-    && apk add --no-cache \
-    bash \
+    && apt update \
+    && apt upgrade \
+    && apt install -y \
     iproute2 \
     iptables \
-    iputils \
+    iputils-ping \
+    iputils-arping \
     tcpdump \
     jq
 
