@@ -17,7 +17,7 @@ RUN set -ex \
 
 ADD entrypoint.sh /
 
-COPY --from=pausebin /pause /usr/local/bin/pause
+COPY --from=pausebin /pause /pause
 COPY --from=crictlbin /usr/bin/crictl /usr/local/bin/crictl
 COPY --from=cnitoolbin /ko-app/cnitool /usr/local/bin/cnitool
 
